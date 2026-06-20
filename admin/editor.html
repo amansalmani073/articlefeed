@@ -1,1 +1,290 @@
-<script src="https://cdn.ckeditor.com/ckeditor5/39.0.1/classic/ckeditor.js"></script>
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Create Article | ArticleFeed</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+<script src="https://cdn.ckeditor.com/ckeditor5/41.4.2/classic/ckeditor.js"></script>
+
+<style>
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:'Poppins',sans-serif;
+}
+
+body{
+background:#f4f7fb;
+padding:30px;
+}
+
+.container{
+max-width:1200px;
+margin:auto;
+}
+
+.header{
+display:flex;
+justify-content:space-between;
+align-items:center;
+margin-bottom:30px;
+}
+
+.header h1{
+color:#16a34a;
+}
+
+.back-btn{
+background:#dc2626;
+color:white;
+text-decoration:none;
+padding:12px 20px;
+border-radius:8px;
+}
+
+.form-box{
+background:white;
+padding:30px;
+border-radius:15px;
+box-shadow:0 10px 30px rgba(0,0,0,.08);
+}
+
+.form-group{
+margin-bottom:20px;
+}
+
+label{
+display:block;
+margin-bottom:8px;
+font-weight:600;
+}
+
+input,
+select,
+textarea{
+width:100%;
+padding:14px;
+border:1px solid #ddd;
+border-radius:10px;
+font-size:15px;
+}
+
+.publish-btn{
+background:#16a34a;
+color:white;
+border:none;
+padding:15px 25px;
+border-radius:10px;
+font-size:16px;
+cursor:pointer;
+font-weight:600;
+}
+
+.publish-btn:hover{
+background:#15803d;
+}
+
+#message{
+margin-top:20px;
+font-weight:600;
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+<div class="header">
+
+<h1>Create New Article</h1>
+
+<a href="dashboard.html" class="back-btn">
+Dashboard
+</a>
+
+</div>
+
+<div class="form-box">
+
+<form id="postForm">
+
+<div class="form-group">
+<label>Article Title</label>
+<input type="text" id="title" required>
+</div>
+
+<div class="form-group">
+<label>Slug</label>
+<input type="text" id="slug" required>
+</div>
+
+<div class="form-group">
+<label>Category</label>
+<select id="category">
+
+<option>ISO 9001</option>
+<option>ISO 14001</option>
+<option>ISO 45001</option>
+<option>ISO 27001</option>
+<option>ISO 22000</option>
+<option>ISO 50001</option>
+<option>ISO 13485</option>
+<option>ISO 22301</option>
+<option>ISO 37001</option>
+<option>ISO 41001</option>
+
+</select>
+</div>
+
+<div class="form-group">
+<label>Featured Image URL</label>
+<input type="text" id="image">
+</div>
+
+<div class="form-group">
+<label>SEO Title</label>
+<input type="text" id="seoTitle">
+</div>
+
+<div class="form-group">
+<label>Meta Description</label>
+<textarea id="metaDescription" rows="4"></textarea>
+</div>
+
+<div class="form-group">
+<label>Focus Keyword</label>
+<input type="text" id="keyword">
+</div>
+
+<div class="form-group">
+<label>Article Content</label>
+<textarea id="editor"></textarea>
+</div>
+
+<button type="submit" class="publish-btn">
+Publish Article
+</button>
+
+<div id="message"></div>
+
+</form>
+
+</div>
+
+</div>
+
+<script type="module">
+
+import { db } from "../js/firebase.js";
+
+import {
+collection,
+addDoc,
+serverTimestamp
+}
+from "https://www.gstatic.com/firebasejs/10.13.2/firebase-firestore.js";
+
+let editorInstance;
+
+ClassicEditor
+.create(document.querySelector('#editor'))
+.then(editor=>{
+editorInstance = editor;
+})
+.catch(error=>{
+console.error(error);
+});
+
+document
+.getElementById("title")
+.addEventListener("keyup",function(){
+
+const slug = this.value
+.toLowerCase()
+.replace(/[^a-z0-9 ]/g,'')
+.replace(/\s+/g,'-');
+
+document.getElementById("slug").value = slug;
+
+});
+
+document
+.getElementById("postForm")
+.addEventListener("submit",async(e)=>{
+
+e.preventDefault();
+
+const postData = {
+
+title:
+document.getElementById("title").value,
+
+slug:
+document.getElementById("slug").value,
+
+category:
+document.getElementById("category").value,
+
+image:
+document.getElementById("image").value,
+
+seoTitle:
+document.getElementById("seoTitle").value,
+
+metaDescription:
+document.getElementById("metaDescription").value,
+
+keyword:
+document.getElementById("keyword").value,
+
+content:
+editorInstance.getData(),
+
+status:"published",
+
+createdAt:
+serverTimestamp()
+
+};
+
+try{
+
+await addDoc(
+collection(db,"posts"),
+postData
+);
+
+document.getElementById("message").style.color="green";
+
+document.getElementById("message").innerHTML=
+"Article Published Successfully";
+
+document.getElementById("postForm").reset();
+
+editorInstance.setData("");
+
+}catch(error){
+
+document.getElementById("message").style.color="red";
+
+document.getElementById("message").innerHTML=
+error.message;
+
+}
+
+});
+
+</script>
+
+</body>
+</html>
+```
