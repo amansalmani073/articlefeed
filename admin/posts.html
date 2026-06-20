@@ -1,1 +1,339 @@
+```html
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Manage Posts | ArticleFeed</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+<style>
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:'Poppins',sans-serif;
+}
+
+body{
+background:#f4f7fb;
+padding:30px;
+}
+
+.container{
+max-width:1200px;
+margin:auto;
+}
+
+.header{
+display:flex;
+justify-content:space-between;
+align-items:center;
+margin-bottom:30px;
+}
+
+.header h1{
+color:#16a34a;
+}
+
+.back-btn{
+background:#dc2626;
+color:white;
+padding:12px 20px;
+text-decoration:none;
+border-radius:8px;
+}
+
+.search-box{
+margin-bottom:25px;
+}
+
+.search-box input{
+width:100%;
+padding:15px;
+border:1px solid #ddd;
+border-radius:10px;
+}
+
+.table-wrapper{
+background:white;
+padding:20px;
+border-radius:15px;
+box-shadow:0 10px 25px rgba(0,0,0,.08);
+overflow-x:auto;
+}
+
+table{
+width:100%;
+border-collapse:collapse;
+}
+
+th{
+background:#16a34a;
+color:white;
+padding:15px;
+text-align:left;
+}
+
+td{
+padding:15px;
+border-bottom:1px solid #eee;
+}
+
+.edit-btn{
+background:#16a34a;
+color:white;
+padding:8px 14px;
+border:none;
+border-radius:6px;
+cursor:pointer;
+margin-right:5px;
+}
+
+.delete-btn{
+background:#dc2626;
+color:white;
+padding:8px 14px;
+border:none;
+border-radius:6px;
+cursor:pointer;
+}
+
+.loading{
+text-align:center;
+padding:20px;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div class="container">
+
+<div class="header">
+
+<h1>Manage Articles</h1>
+
+<a href="dashboard.html" class="back-btn">
+Dashboard
+</a>
+
+</div>
+
+<div class="search-box">
+
+<input
+type="text"
+id="searchInput"
+placeholder="Search articles...">
+
+</div>
+
+<div class="table-wrapper">
+
+<table>
+
+<thead>
+
+<tr>
+<th>Title</th>
+<th>Category</th>
+<th>Status</th>
+<th>Actions</th>
+</tr>
+
+</thead>
+
+<tbody id="postsTable">
+
+<tr>
+<td colspan="4" class="loading">
+Loading Articles...
+</td>
+</tr>
+
+</tbody>
+
+</table>
+
+</div>
+
+</div>
+
+<script type="module">
+
+import { db } from "../js/firebase.js";
+
+import {
+collection,
+getDocs,
+deleteDoc,
+doc
+}
+from "https://www.gstatic.com/firebasejs/10.13.2/firebase-firestore.js";
+
+const postsTable =
+document.getElementById("postsTable");
+
+let postsData = [];
+
+async function loadPosts(){
+
+postsTable.innerHTML =
+`<tr><td colspan="4">Loading...</td></tr>`;
+
+try{
+
+const querySnapshot =
+await getDocs(
+collection(db,"posts")
+);
+
+postsData = [];
+
+querySnapshot.forEach((document)=>{
+
+postsData.push({
+id:document.id,
+...document.data()
+});
+
+});
+
+renderPosts(postsData);
+
+}catch(error){
+
+postsTable.innerHTML =
+`<tr><td colspan="4">${error.message}</td></tr>`;
+
+}
+
+}
+
+function renderPosts(posts){
+
+if(posts.length===0){
+
+postsTable.innerHTML =
+`<tr><td colspan="4">No Articles Found</td></tr>`;
+
+return;
+
+}
+
+postsTable.innerHTML = "";
+
+posts.forEach(post=>{
+
+postsTable.innerHTML += `
+
+<tr>
+
+<td>${post.title || ""}</td>
+
+<td>${post.category || ""}</td>
+
+<td>${post.status || "published"}</td>
+
+<td>
+
+<button
+class="edit-btn"
+onclick="editPost('${post.id}')">
+
+Edit
+
+</button>
+
+<button
+class="delete-btn"
+onclick="deletePost('${post.id}')">
+
+Delete
+
+</button>
+
+</td>
+
+</tr>
+
+`;
+
+});
+
+}
+
+window.deletePost = async(id)=>{
+
+const confirmDelete =
+confirm("Delete this article?");
+
+if(!confirmDelete) return;
+
+try{
+
+await deleteDoc(
+doc(db,"posts",id)
+);
+
+loadPosts();
+
+}catch(error){
+
+alert(error.message);
+
+}
+
+};
+
+window.editPost = (id)=>{
+
+window.location.href =
+`editor.html?id=${id}`;
+
+};
+
+document
+.getElementById("searchInput")
+.addEventListener("keyup",(e)=>{
+
+const keyword =
+e.target.value.toLowerCase();
+
+const filtered =
+postsData.filter(post=>{
+
+return (
+(post.title || "")
+.toLowerCase()
+.includes(keyword)
+
+||
+
+(post.category || "")
+.toLowerCase()
+.includes(keyword)
+);
+
+});
+
+renderPosts(filtered);
+
+});
+
+loadPosts();
+
+</script>
+
+</body>
+</html>
+```
 
