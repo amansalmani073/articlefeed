@@ -1,1 +1,339 @@
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Blogs | ArticleFeed</title>
+<meta name="description" content="Explore the latest articles, business insights, ISO certification guides, technology updates, and industry knowledge on ArticleFeed.">
+
+<link rel="stylesheet" href="css/style.css">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+<style>
+.page-header{
+padding:80px 0;
+background:linear-gradient(135deg,#16a34a,#dc2626);
+color:white;
+text-align:center;
+}
+
+.page-header h1{
+font-size:50px;
+margin-bottom:10px;
+}
+
+.search-section{
+padding:40px 0;
+background:#fff;
+}
+
+.search-box{
+max-width:700px;
+margin:auto;
+display:flex;
+gap:10px;
+}
+
+.search-box input{
+flex:1;
+padding:15px;
+border:1px solid #ddd;
+border-radius:10px;
+font-size:16px;
+}
+
+.search-box button{
+padding:15px 25px;
+background:#16a34a;
+color:white;
+border:none;
+border-radius:10px;
+cursor:pointer;
+}
+
+.blogs-section{
+padding:70px 0;
+}
+
+.blog-grid{
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(320px,1fr));
+gap:30px;
+}
+
+.blog-card{
+background:white;
+border-radius:15px;
+overflow:hidden;
+box-shadow:0 10px 30px rgba(0,0,0,.08);
+transition:.3s;
+}
+
+.blog-card:hover{
+transform:translateY(-8px);
+}
+
+.blog-card img{
+width:100%;
+height:220px;
+object-fit:cover;
+}
+
+.blog-content{
+padding:20px;
+}
+
+.blog-category{
+display:inline-block;
+background:#16a34a;
+color:white;
+padding:6px 12px;
+border-radius:30px;
+font-size:12px;
+margin-bottom:15px;
+}
+
+.blog-content h3{
+margin-bottom:10px;
+font-size:22px;
+}
+
+.blog-content p{
+color:#666;
+margin-bottom:15px;
+}
+
+.read-more{
+display:inline-block;
+color:#16a34a;
+font-weight:600;
+text-decoration:none;
+}
+
+.pagination{
+display:flex;
+justify-content:center;
+gap:10px;
+margin-top:50px;
+}
+
+.pagination a{
+padding:10px 15px;
+background:white;
+text-decoration:none;
+border-radius:8px;
+color:#333;
+box-shadow:0 5px 15px rgba(0,0,0,.08);
+}
+
+.pagination a.active{
+background:#16a34a;
+color:white;
+}
+</style>
+
+</head>
+<body>
+
+<header class="header">
+<div class="container">
+
+<div class="logo">
+Article<span>Feed</span>
+</div>
+
+<nav>
+<a href="index.html">Home</a>
+<a href="blogs.html">Blogs</a>
+<a href="admin/login.html">Login</a>
+</nav>
+
+</div>
+</header>
+
+<section class="page-header">
+<div class="container">
+<h1>Latest Articles</h1>
+<p>Explore professional insights, business guides, and industry knowledge.</p>
+</div>
+</section>
+
+<section class="search-section">
+<div class="container">
+
+<div class="search-box">
+<input type="text" placeholder="Search articles...">
+<button>Search</button>
+</div>
+
+</div>
+</section>
+
+<section class="blogs-section">
+
+<div class="container">
+
+<div class="blog-grid">
+
+<div class="blog-card">
+
+<img src="https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?w=1000">
+
+<div class="blog-content">
+
+<span class="blog-category">ISO 9001</span>
+
+<h3>How to Get ISO 9001 Certification in Saudi Arabia</h3>
+
+<p>
+Learn the complete certification process, documentation requirements,
+and implementation steps.
+</p>
+
+<a href="post.html" class="read-more">
+Read More →
+</a>
+
+</div>
+
+</div>
+
+<div class="blog-card">
+
+<img src="https://images.unsplash.com/photo-1520607162513-77705c0f0d4a?w=1000">
+
+<div class="blog-content">
+
+<span class="blog-category">ISO 14001</span>
+
+<h3>Benefits of ISO 14001 for Businesses</h3>
+
+<p>
+Discover how environmental management systems improve compliance and sustainability.
+</p>
+
+<a href="post.html" class="read-more">
+Read More →
+</a>
+
+</div>
+
+</div>
+
+<div class="blog-card">
+
+<img src="https://images.unsplash.com/photo-1516321318423-f06f85e504b3?w=1000">
+
+<div class="blog-content">
+
+<span class="blog-category">ISO 27001</span>
+
+<h3>Protect Business Data with ISO 27001</h3>
+
+<p>
+Understand the importance of information security management systems.
+</p>
+
+<a href="post.html" class="read-more">
+Read More →
+</a>
+
+</div>
+
+</div>
+
+<div class="blog-card">
+
+<img src="https://images.unsplash.com/photo-1497366754035-f200968a6e72?w=1000">
+
+<div class="blog-content">
+
+<span class="blog-category">Business</span>
+
+<h3>Top Business Compliance Trends in 2026</h3>
+
+<p>
+Explore the latest compliance requirements affecting businesses worldwide.
+</p>
+
+<a href="post.html" class="read-more">
+Read More →
+</a>
+
+</div>
+
+</div>
+
+<div class="blog-card">
+
+<img src="https://images.unsplash.com/photo-1552664730-d307ca884978?w=1000">
+
+<div class="blog-content">
+
+<span class="blog-category">Management</span>
+
+<h3>Building High Performance Teams</h3>
+
+<p>
+Practical strategies to improve teamwork and organizational performance.
+</p>
+
+<a href="post.html" class="read-more">
+Read More →
+</a>
+
+</div>
+
+</div>
+
+<div class="blog-card">
+
+<img src="https://images.unsplash.com/photo-1516321497487-e288fb19713f?w=1000">
+
+<div class="blog-content">
+
+<span class="blog-category">Technology</span>
+
+<h3>Digital Transformation for Modern Companies</h3>
+
+<p>
+Learn how businesses are leveraging technology to stay competitive.
+</p>
+
+<a href="post.html" class="read-more">
+Read More →
+</a>
+
+</div>
+
+</div>
+
+</div>
+
+<div class="pagination">
+<a href="#" class="active">1</a>
+<a href="#">2</a>
+<a href="#">3</a>
+<a href="#">Next</a>
+</div>
+
+</div>
+
+</section>
+
+<footer>
+<div class="container">
+<p>© 2026 ArticleFeed. All Rights Reserved.</p>
+</div>
+</footer>
+
+<script src="js/main.js"></script>
+
+</body>
+</html>
+```
 
