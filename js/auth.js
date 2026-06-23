@@ -1,4 +1,3 @@
-```javascript
 import { auth } from "./firebase.js";
 
 import {
@@ -91,5 +90,3 @@ user.email;
 });
 
 }
-```
-
