@@ -1,4 +1,3 @@
-```javascript id="d4i7wq"
 import { db } from "./firebase.js";
 
 import {
@@ -242,5 +241,3 @@ loadAllPosts();
 loadSinglePost();
 
 });
-```
-
