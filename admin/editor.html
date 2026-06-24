@@ -75,60 +75,152 @@
         </div>
     </div>
 
-    <script type="module">
-        import { db, storage } from "../js/firebase.js";
-        import { collection, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.13.2/firebase-firestore.js";
-        import { ref, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/10.13.2/firebase-storage.js";
+<script type="module">
 
-        let editorInstance;
-        ClassicEditor.create(document.querySelector('#editor')).then(e => editorInstance = e);
+import { db } from "../js/firebase.js";
 
-        document.getElementById("title").addEventListener("keyup", function() {
-            const slug = this.value.toLowerCase().replace(/[^a-z0-9 ]/g, '').replace(/\s+/g, '-');
-            document.getElementById("slug").value = slug;
-        });
+import {
+collection,
+addDoc,
+serverTimestamp
+} from "https://www.gstatic.com/firebasejs/10.13.2/firebase-firestore.js";
 
-        document.getElementById("postForm").addEventListener("submit", async (e) => {
-            e.preventDefault();
-            const imageFile = document.getElementById("imageInput").files[0];
-            const msg = document.getElementById("message");
-            
-            if (!imageFile) {
-                msg.style.color = "red";
-                msg.innerHTML = "Please select an image file.";
-                return;
+let editorInstance;
+
+ClassicEditor
+.create(document.querySelector("#editor"))
+.then(editor => {
+    editorInstance = editor;
+})
+.catch(error => {
+    console.error(error);
+});
+
+document.getElementById("title")
+.addEventListener("keyup", function(){
+
+    const slug = this.value
+        .toLowerCase()
+        .replace(/[^a-z0-9 ]/g,"")
+        .replace(/\s+/g,"-");
+
+    document.getElementById("slug").value = slug;
+});
+
+document.getElementById("postForm")
+.addEventListener("submit", async function(e){
+
+    e.preventDefault();
+
+    const msg =
+    document.getElementById("message");
+
+    const imageFile =
+    document.getElementById("imageInput").files[0];
+
+    if(!imageFile){
+
+        msg.style.color = "red";
+        msg.innerHTML =
+        "Please select an image.";
+
+        return;
+    }
+
+    try{
+
+        msg.style.color = "#16a34a";
+        msg.innerHTML =
+        "Uploading image to ImgBB...";
+
+        const formData =
+        new FormData();
+
+        formData.append(
+            "image",
+            imageFile
+        );
+
+        const uploadResponse =
+        await fetch(
+            "https://api.imgbb.com/1/upload?key=9d11a88447bf1e2f3adc76118bb6f724",
+            {
+                method:"POST",
+                body:formData
             }
+        );
 
-            try {
-                msg.innerHTML = "Uploading image...";
-                // Upload image to Storage
-                const storageRef = ref(storage, 'posts/' + Date.now() + '_' + imageFile.name);
-                const snapshot = await uploadBytes(storageRef, imageFile);
-                const imageUrl = await getDownloadURL(snapshot.ref);
+        const uploadData =
+        await uploadResponse.json();
 
-                // Save data to Firestore
-                await addDoc(collection(db, "posts"), {
-                    title: document.getElementById("title").value,
-                    slug: document.getElementById("slug").value,
-                    category: document.getElementById("category").value,
-                    image: imageUrl,
-                    seoTitle: document.getElementById("seoTitle").value,
-                    metaDescription: document.getElementById("metaDescription").value,
-                    keyword: document.getElementById("keyword").value,
-                    content: editorInstance.getData(),
-                    status: "published",
-                    createdAt: serverTimestamp()
-                });
+        if(!uploadData.success){
 
-                msg.style.color = "green";
-                msg.innerHTML = "Article Published Successfully";
-                document.getElementById("postForm").reset();
-                editorInstance.setData("");
-            } catch (error) {
-                msg.style.color = "red";
-                msg.innerHTML = "Error: " + error.message;
+            throw new Error(
+                "Image upload failed."
+            );
+        }
+
+        const imageUrl =
+        uploadData.data.url;
+
+        msg.innerHTML =
+        "Saving article...";
+
+        await addDoc(
+            collection(db,"posts"),
+            {
+                title:
+                document.getElementById("title").value,
+
+                slug:
+                document.getElementById("slug").value,
+
+                category:
+                document.getElementById("category").value,
+
+                image:
+                imageUrl,
+
+                seoTitle:
+                document.getElementById("seoTitle").value,
+
+                metaDescription:
+                document.getElementById("metaDescription").value,
+
+                keyword:
+                document.getElementById("keyword").value,
+
+                content:
+                editorInstance.getData(),
+
+                status:
+                "published",
+
+                createdAt:
+                serverTimestamp()
             }
-        });
-    </script>
-</body>
-</html>
+        );
+
+        msg.style.color = "green";
+
+        msg.innerHTML =
+        "Article Published Successfully";
+
+        document.getElementById("postForm").reset();
+
+        editorInstance.setData("");
+
+    }
+    catch(error){
+
+        console.error(error);
+
+        msg.style.color = "red";
+
+        msg.innerHTML =
+        "Error: " + error.message;
+    }
+
+});
+
+</script>
