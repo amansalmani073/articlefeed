@@ -1,4 +1,0 @@
-User-agent: *
-Allow: /
-Disallow: /admin/
-Sitemap: https://articlefeed-4be15.web.app/sitemap.xml
