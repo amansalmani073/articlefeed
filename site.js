@@ -1,9 +1,0 @@
-export const escapeHTML=(value="")=>String(value).replace(/[&<>'"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;","'":"&#39;",'"':"&quot;"}[c]));
-export const safeURL=(value="")=>{try{const u=new URL(value,location.href);return ["http:","https:"].includes(u.protocol)?u.href:""}catch{return ""}};
-export const formatDate=(stamp)=>{if(!stamp)return "";const d=stamp.toDate?stamp.toDate():new Date(stamp);return Number.isNaN(d.getTime())?"":new Intl.DateTimeFormat("en",{dateStyle:"medium"}).format(d)};
-export const slugify=(v="")=>v.toLowerCase().trim().replace(/[^a-z0-9\s-]/g,"").replace(/\s+/g,"-").replace(/-+/g,"-");
-export function setMeta(name,content,property=false){if(!content)return;let node=document.head.querySelector(`meta[${property?'property':'name'}="${name}"]`);if(!node){node=document.createElement('meta');node.setAttribute(property?'property':'name',name);document.head.append(node)}node.content=content}
-export function setCanonical(url){let link=document.head.querySelector('link[rel="canonical"]');if(!link){link=document.createElement('link');link.rel='canonical';document.head.append(link)}link.href=url}
-export function addJsonLd(data,id="dynamic-schema"){document.getElementById(id)?.remove();const s=document.createElement('script');s.type='application/ld+json';s.id=id;s.textContent=JSON.stringify(data);document.head.append(s)}
-export function initNav(){const btn=document.querySelector('.nav-toggle'),nav=document.querySelector('.site-nav');btn?.addEventListener('click',()=>{const open=nav.classList.toggle('open');btn.setAttribute('aria-expanded',String(open))})}
-document.addEventListener('DOMContentLoaded',initNav);
