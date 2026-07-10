@@ -1,5 +1,0 @@
-{
-  "firestore": {"rules": "firestore.rules"},
-  "storage": {"rules": "storage.rules"},
-  "hosting": {"public": ".", "ignore": ["firebase.json", "**/.*", "**/node_modules/**"], "cleanUrls": true, "trailingSlash": false, "headers": [{"source": "/admin/**", "headers": [{"key": "X-Robots-Tag", "value": "noindex, nofollow"}]}, {"source": "**/*.@(js|css|svg)", "headers": [{"key": "Cache-Control", "value": "public,max-age=604800"}]}]}
-}
