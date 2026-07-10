@@ -21,3 +21,6 @@ firebase deploy
 ## Important SEO note
 
 Firestore articles are rendered in the browser. Google can render JavaScript, but server-side rendering or a static build that creates one HTML file per article is stronger for highly competitive SEO. The included dynamic metadata and Article schema improve the current implementation.
+
+## Professional Editorial Redesign
+This edition includes a fully redesigned public website and admin interface with an original editorial-journal visual system, responsive layouts, improved article reading experience, accessible navigation, structured SEO markup, and the existing Firebase publishing workflow.
